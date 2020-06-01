@@ -142,8 +142,7 @@ fmt: ; $(info $(M) running gofmt…) @ ## Run gofmt on all source files
 # Misc
 
 .PHONY: setup
-## setup: setup go modules
-setup:
+setup: ## setup: setup go modules
 	@go mod init \
 	&& go mod tidy \
 	&& go mod vendor
