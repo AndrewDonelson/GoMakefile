@@ -29,7 +29,7 @@ export GO111MODULE=on
 deploy: version clean test-race test-coverage all ## Execute everything
 
 .PHONY: all
-all: fmt lint | $(BIN) ; $(info $(M) building executable…) @ ## Build binary
+all: setup fmt lint | $(BIN) ; $(info $(M) building executable…) @ ## Build binary
 	$Q $(GO) build \
 		-tags release \
 		-ldflags '-X $(MODULE)/cmd.Version=$(VERSION) -X $(MODULE)/cmd.BuildDate=$(DATE)' \
@@ -141,6 +141,13 @@ fmt: ; $(info $(M) running gofmt…) @ ## Run gofmt on all source files
 
 # Misc
 
+.PHONY: setup
+## setup: setup go modules
+setup:
+	@go mod init \
+	&& go mod tidy \
+	&& go mod vendor
+		
 .PHONY: clean
 clean: ; $(info $(M) cleaning…)	@ ## Cleanup everything
 	@rm -rf $(BIN)
